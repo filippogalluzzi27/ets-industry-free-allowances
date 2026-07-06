@@ -1,0 +1,23 @@
+# --- R / RStudio ---
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+
+# --- Output generati ---
+output/            
+*.png
+*.pdf
+
+# --- Dati 
+data/raw/
+*.csv         
+*.xlsx 
+
+# --- Sistema ---
+.DS_Store
+Thumbs.db
+.Rproj.user
+.httr-oauth
+.quarto
