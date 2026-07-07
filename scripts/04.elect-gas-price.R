@@ -75,4 +75,4 @@ gas <- gas %>%
 df <- elect %>%
   left_join(gas, by = c("country", "year"))
 
-write.csv(df, "data/processed/elect-gas-price.csv", row.names = F)
+write.csv(df, file.path(inter, "elect-gas-price.csv"), row.names = F)
