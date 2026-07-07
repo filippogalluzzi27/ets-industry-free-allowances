@@ -189,7 +189,7 @@ process_ceramics <- function(country) {
 
 # ==============================================================================
 # Execution and merge for df_final with only selected variables
-# 
+#
 # New variables:
 #     energy consumption intensity = ec_total/output
 #     electricity intensity = electricity/output
@@ -205,7 +205,6 @@ df_plp      <- run_all(process_plp)
 df_glass    <- run_all(process_glass)
 df_ceramics <- run_all(process_ceramics)
 
-
 df_final <- bind_rows(df_isi, df_pap, df_plp, df_glass, df_ceramics) %>%
   replace(is.na(.), 0) %>%
   mutate(
@@ -214,7 +213,8 @@ df_final <- bind_rows(df_isi, df_pap, df_plp, df_glass, df_ceramics) %>%
     steam_intensity = ifelse(output   == 0, 0,
                              ifelse("distr_steam" %in% names(.), distr_steam / output, 0)),
     share_elect     = ifelse(ec_total == 0, 0, elect       / ec_total * 100),
-    share_steam     = ifelse(ec_total == 0, 0)) %>%
+    share_steam = ifelse(ec_total == 0, 0,
+                         ifelse("distr_steam" %in% names(.), distr_steam / ec_total * 100, 0))) %>%
   select(year, country, sector, output, ec_total,
          share_elect, share_steam,
          ec_intensity, elect_intensity, steam_intensity)
