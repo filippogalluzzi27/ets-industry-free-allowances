@@ -15,7 +15,7 @@
 library(dplyr); library(tidyr); library(readxl); library(purrr); library(stringr)
 
 raw <- "data/raw"
-proc <- "data/processed"
+inter <- "data/intermediate"
 data_path <- file.path(raw, "free_all_ver_emiss")
 
 
@@ -55,7 +55,7 @@ process_country <- function(country_code) {
   fa_data <- raw_data[3:nrow(raw_data), 3:(ve_start - 1), drop = FALSE]
   ve_data <- raw_data[3:nrow(raw_data), ve_start:ncol(raw_data), drop = FALSE]
   
-  # Rename columns with the appropriate names
+  # Rename columns with the appropriate names (from codes to readable names)
   colnames(fa_data) <- sectors[3:(ve_start - 1)]
   colnames(ve_data) <- sectors[ve_start:ncol(raw_data)]
 
@@ -96,4 +96,4 @@ df_final <- df_final %>%
   filter(!is.na(sector)) %>%
   arrange(country, sector, year)
 
-write.csv(df_final, file.path(PROCESSED, "fa-ve.csv"), row.names = FALSE)
+write.csv(df_final, file.path(inter, "fa-ve.csv"), row.names = FALSE)
