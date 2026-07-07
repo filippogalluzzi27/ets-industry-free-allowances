@@ -1,7 +1,7 @@
 # ==============================================================================
 # This script is used to produce basic statistics
 #
-# ==============================================================================
+#==============================================================================
 library(dplyr); library(tidyr); library(ggplot2); library(moments)
 library(patchwork); library(gridExtra)
 
@@ -16,6 +16,7 @@ df <- read.csv(file.path(proc, "final.csv"))
 df$period   <- factor(df$period,   levels = c("Pre 2013", "Post 2013"))
 
 
+#==============================================================================
 # period mean
 tab_periodo <- df %>%
   group_by(sector, period) %>%
@@ -30,6 +31,7 @@ print(tab_periodo)
 write.csv(tab_periodo, file.path(stats, "tab_mean_sector_period.csv"), row.names = FALSE)
 
 
+#==============================================================================
 p_dumbbell <- df %>%
   group_by(sector, period) %>%
   summarise(mean_emiss = mean(ver_emiss, na.rm = TRUE), .groups = "drop") %>%
@@ -43,6 +45,7 @@ print(p_dumbbell)
 ggsave(file.path(stats, "mean_emiss_pre_post.png"), p_dumbbell, width = 8, height = 5, dpi = 300)
 
 
+#==============================================================================
 df_tot <- df %>%
   group_by(year) %>%
   summarise(ver_emiss = sum(ver_emiss, na.rm = TRUE), .groups = "drop")
@@ -79,5 +82,9 @@ p_tot <- ggplot(df_tot, aes(x = year, y = ver_emiss)) +
     axis.ticks       = element_line(color = "grey70")
   )
 
+
 print(p_tot)
-ggsave(file.path(stats, "10_total_emiss.png"), p_tot, width = 9, height = 5.5, dpi = 300, bg = "white")
+
+#=============================================================================
+ggsave(file.path(stats, "10_total_emiss.png"), p_tot, width = 9, height = 5.5, 
+       dpi = 300, bg = "white")
